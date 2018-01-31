@@ -16,7 +16,7 @@ export default class Router extends React.Component {
 
     return (
       <View>
-        <ScreenComponent routeParams={routeParams} routeName={routeName} />
+        <ScreenComponent routeParams={routeParams} routeName={routeName} navigate={this.navigate} />
       </View>
     );
   }
