@@ -5,6 +5,7 @@ import LoginScreen from './LoginScreen';
 import ReposScreen from './ReposScreen';
 import RepoScreen from './RepoScreen';
 import Router from './Router';
+import Api from './Api';
 
 const routes = {
   login: LoginScreen,
@@ -14,10 +15,12 @@ const routes = {
 
 
 export default class App extends React.Component {
+  api = new Api();
+
   render() {
     return (
       <View style={styles.container}>
-        <Router routes={routes} initRoute="login" />
+        <Router routes={routes} initRoute="login" api={this.api} />
       </View>
     );
   }

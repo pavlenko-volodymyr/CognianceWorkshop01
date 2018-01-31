@@ -61,54 +61,75 @@ export default class ReposScreen extends React.Component {
         stars: 10,
         owner: {
           username: 'test owner 1'
-        }
+        },
+        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        language: 'javascript',
       },
       {
         name: 'test repo 2',
         stars: 10,
         owner: {
           username: 'test owner 1'
-        }
+        },
+        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        language: 'javascript',
       },
       {
         name: 'test repo 3',
         stars: 10,
         owner: {
           username: 'test owner 2'
-        }
+        },
+        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        language: 'javascript',
       },
       {
         name: 'test repo 4',
         stars: 10,
         owner: {
           username: 'test owner 2'
-        }
+        },
+        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        language: 'javascript',
       },
       {
         name: 'test repo 5',
         stars: 10,
         owner: {
           username: 'test owner 5'
-        }
+        },
+        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        language: 'javascript',
       },
       {
         name: 'test repo 6',
         stars: 10,
         owner: {
           username: 'test owner 2'
-        }
+        },
+        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        language: 'javascript',
       },
       {
         name: 'test repo 7',
         stars: 10,
         owner: {
           username: 'test owner 5'
-        }
+        },
+        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
+        language: 'javascript',
       },
     ],
   }
 
-  navigateDetails = repoName => () => this.props.navigate('repo', { repoName })
+  navigateDetails = repo => () => this.props.navigate('repo', { repo })
 
   renderItem = ({ item }) => {
     return (
@@ -121,13 +142,13 @@ export default class ReposScreen extends React.Component {
           <Text style={styles.repoName}>{item.name}</Text>
           <Text style={styles.starsCount}>stars {item.stars}</Text>
         </View>
-        <Button title="details" style={styles.details} onPress={this.navigateDetails(item.name)} />
+        <Button title="details" style={styles.details} onPress={this.navigateDetails(item)} />
       </View>
     );
   }
 
   render() {
-    const { routeParams: { username } } = this.props;
+    const username = this.props.api.getUsername();
     const { repos } = this.state;
 
     return (
