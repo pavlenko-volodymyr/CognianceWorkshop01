@@ -41,7 +41,7 @@ export default class LoginScreen extends React.Component {
     } else if (!this.state.password) {
       this.setState({ error: 'password is required' })
     } else {
-      this.props.navigate('repos')
+      this.props.navigate('repos', { username: this.state.username })
     }
   }
 
@@ -59,6 +59,7 @@ export default class LoginScreen extends React.Component {
               style={styles.input}
               placeholder="username"
               onChangeText={this.onInputChange('username')}
+              value={this.state.username}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -66,6 +67,7 @@ export default class LoginScreen extends React.Component {
               style={styles.input}
               placeholder="password"
               onChangeText={this.onInputChange('password')}
+              value={this.state.password}
             />
           </View>
           { this.state.error && <Text style={styles.error}>{this.state.error}</Text> }
