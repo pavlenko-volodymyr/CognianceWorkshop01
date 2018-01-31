@@ -33,18 +33,22 @@ const styles = StyleSheet.create({
   value: {
     flex: 1,
     textAlign: 'right'
-  }
+  },
 });
 
 export default class RepoScreen extends React.Component {
-  state = {
-    repo: {}
+  state = { repo: {} }
+
+  componentDidMount() {
+    this.props.api.fetchRepo(this.props.routeParams.repoName).then(
+      repo => this.setState({ repo })
+    )
   }
 
   navigateList = () => this.props.navigate('repos')
 
   render() {
-    const { routeParams: { repo } } = this.props;
+    const { repo } = this.state;
 
     return (
       <View>
@@ -55,7 +59,7 @@ export default class RepoScreen extends React.Component {
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.row}>
             <Text style={styles.key}>Owner</Text>
-            <Text style={styles.value}>{repo.owner.username}</Text>
+            <Text style={styles.value}>{repo.username}</Text>
           </View>
           <View style={styles.row}>
             <Text style={styles.key}>Stars</Text>

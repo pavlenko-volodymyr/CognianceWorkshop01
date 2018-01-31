@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, Button, FlatList } from 'react-native';
+import { Text, View, StyleSheet, Button, FlatList, ActivityIndicator } from 'react-native';
 
 const styles = StyleSheet.create({
   header: {
@@ -50,102 +50,45 @@ const styles = StyleSheet.create({
   repoName: {
     fontWeight: 'bold',
     fontSize: 20,
+  },
+  activity: {
+    marginTop: 50,
   }
 });
 
 export default class ReposScreen extends React.Component {
-  state = {
-    repos: [
-      {
-        name: 'test repo 1',
-        stars: 10,
-        owner: {
-          username: 'test owner 1'
-        },
-        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        language: 'javascript',
-      },
-      {
-        name: 'test repo 2',
-        stars: 10,
-        owner: {
-          username: 'test owner 1'
-        },
-        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        language: 'javascript',
-      },
-      {
-        name: 'test repo 3',
-        stars: 10,
-        owner: {
-          username: 'test owner 2'
-        },
-        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        language: 'javascript',
-      },
-      {
-        name: 'test repo 4',
-        stars: 10,
-        owner: {
-          username: 'test owner 2'
-        },
-        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        language: 'javascript',
-      },
-      {
-        name: 'test repo 5',
-        stars: 10,
-        owner: {
-          username: 'test owner 5'
-        },
-        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        language: 'javascript',
-      },
-      {
-        name: 'test repo 6',
-        stars: 10,
-        owner: {
-          username: 'test owner 2'
-        },
-        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        language: 'javascript',
-      },
-      {
-        name: 'test repo 7',
-        stars: 10,
-        owner: {
-          username: 'test owner 5'
-        },
-        created: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        updated: 'Wed Jan 31 2018 23:48:32 GMT+0200 (EET)',
-        language: 'javascript',
-      },
-    ],
+  state = { repos: null }
+
+  componentDidMount() {
+    this.props.api.fetchRepos().then(repos => this.setState({ repos }))
   }
 
-  navigateDetails = repo => () => this.props.navigate('repo', { repo })
+  navigateDetails = repoName => () => this.props.navigate('repo', { repoName })
 
   renderItem = ({ item }) => {
     return (
       <View style={styles.item}>
         <View style={styles.owner}>
           <View style={styles.avatar}></View>
-          <Text style={styles.ownerName}>{item.owner.username}</Text>
+          <Text style={styles.ownerName}>{item.username}</Text>
         </View>
         <View style={styles.repoInfo}>
           <Text style={styles.repoName}>{item.name}</Text>
           <Text style={styles.starsCount}>stars {item.stars}</Text>
         </View>
-        <Button title="details" style={styles.details} onPress={this.navigateDetails(item)} />
+        <Button title="details" style={styles.details} onPress={this.navigateDetails(item.name)} />
       </View>
     );
   }
+
+  renderContent = () => !this.state.repos ?
+    <ActivityIndicator style={styles.activity} />
+    :
+    <FlatList
+      data={this.state.repos}
+      renderItem={this.renderItem}
+      keyExtractor={item => item.name}
+    />;
 
   render() {
     const username = this.props.api.getUsername();
@@ -158,11 +101,7 @@ export default class ReposScreen extends React.Component {
           <Button title="logout" onPress={() => this.props.navigate('login')} />
         </View>
         <View style={styles.content}>
-          <FlatList
-            data={repos}
-            renderItem={this.renderItem}
-            keyExtractor={item => item.name}
-          />
+          {this.renderContent()}
         </View>
       </View>
     );

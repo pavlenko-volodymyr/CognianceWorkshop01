@@ -41,8 +41,7 @@ export default class LoginScreen extends React.Component {
     } else if (!this.state.password) {
       this.setState({ error: 'password is required' })
     } else {
-      this.props.api.login(this.state.username);
-      this.props.navigate('repos')
+      this.props.api.login(this.state.username).then(() => this.props.navigate('repos'))
     }
   }
 
